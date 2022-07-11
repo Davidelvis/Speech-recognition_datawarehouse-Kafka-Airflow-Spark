@@ -1,0 +1,121 @@
+<h1 align="center">Speech-to-text data collection with Kafka, Airflow, and Spark</h1>
+<div>
+<img src="https://img.shields.io/badge/OS-linux%20%7C%20windows-blue??style=flat&logo=Linux&logoColor=b0c0c0&labelColor=363D44" alt="Operating systems"/>
+</div>
+
+</br>
+
+![causal-image](https://miro.medium.com/max/1072/1*TzRyGCOSa4aZhda3B2H-qg.png)
+
+## Table of Contents
+
+1. [Introduction](#Introduction)
+2. [Project Structure](#project-structure)
+   - [data](#data)
+   - [notebooks](#notebooks)
+   - [scripts](#scripts)
+   - [tests](#tests)
+   - [logs](#logs)
+   - [root folder](#root-folder)
+3. [Installation guide](#installation-guide)
+
+<hr>
+
+## Introduction
+
+ <p>Large and quality datasets are critical to ensure the performance, fairness, robustness, reliability, and scalability of ML systems. Data scientists often lack diverse and large datasets to train and test the machine learning models they design. This project focuses on developing a tool that can be deployed to process posting and receiving text and audio files from and into a data lake, apply transformation in a distributed manner, and load it into a warehouse in a suitable format to train a speech-t0-text model.  The general objective of the project is to develop a data engineering pipeline using Apache Kafka, Apache Spark and Airflow to allow collection of millions of Amharic and Swahili audio recordings from speakers reading digital text in app and web platforms. These recordings can be used to produce a large and diverse dataset for training and testing speech-to-text processing models.
+</p>
+<p>The proposed data pipeline was built on Apache Kafka, an open-source distributed event streaming platform. By combining messaging, storage, and stream processing, the data pipeline allow collection, storage and analysis of real-time audio datasets. The data pipeline consists of the following key components:
+</p>
+<ol>
+    <li>Data producers</li>
+    <li>Data consumers</li>
+    <li>Apache Kafka cluster</li>
+    <li>Amazon S3 bucket Connectors</li>
+    <li>Apache Spark Stream preprocessors</li>
+</ol>
+ <p>
+
+## Project Structure
+
+### [images](images):
+
+- `images/` the folder where all snapshot for the project are stored.
+
+### [logs](logs):
+
+- `logs/` the folder where script logs are stored.
+
+### [data](data):
+
+- `data/` the folder where the dataset files are stored.
+
+### [.github](.github):
+
+- `.github/`: the folder where github actions and unit-tests are integrated.
+- `cml.yaml`: the file where the cml configuration is stored.
+
+### [.vscode](.vscode):
+
+- `.vscode/`: the folder where local path are stored.
+
+### [notebooks](notebooks):
+
+- `notebooks/`: a jupyter notebook for preprocessing the data.
+
+### [scripts](scripts):
+
+- `scripts/`: folder where modules are stored.
+
+### [tests](tests):
+
+- `tests/`: the folder containing unit tests for the scripts.
+
+### [root folder](#)
+
+- `requirements.txt`: a text file listing the projet's dependancies.
+- `.travis.yml`: a configuration file Travis CI for unit test.
+- `setup.py`: a configuration file for installing the scripts as a package.
+- `results.txt`: a text file containing the results of the cml report.
+- `README.md`: Markdown text with a brief explanation of the project and the repository structure.
+
+<hr>
+
+# <a name='Installation guide'></a>Installation guide
+
+### <a name='conda'></a>Conda Enviroment
+
+```bash
+conda create --name stt python==3.8
+conda activate stt
+```
+
+### Next
+
+```bash
+git clone https://github.com/Davidelvis/Speech-recognition_datawarehouse-Kafka-Airflow-Spark-.git
+cd StoTkas
+sudo python3 setup.py install
+```
+
+### <a name='conda'></a>Setting up docker container for the project
+
+#### Setting up kafka and zookeeper
+
+```bash
+docker-compose -f docker-compose.yml up -d
+```
+
+#### Setting up spark and airflow
+
+```bash
+docker-compose -f docker-compose1.yml up -d
+```
+
+<hr>
+
+# <a name='license'></a>License
+
+[MIT](https://github.com/Speech-to-text-Kafka-Airflow-Spark/StoTkas/blob/main/LICENSE)
+
+
