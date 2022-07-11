@@ -94,7 +94,7 @@ conda activate stt
 
 ```bash
 git clone https://github.com/Davidelvis/Speech-recognition_datawarehouse-Kafka-Airflow-Spark-.git
-cd StoTkas
+cd Speech-recognition_datawarehouse-Kafka-Airflow-Spark
 sudo python3 setup.py install
 ```
 
