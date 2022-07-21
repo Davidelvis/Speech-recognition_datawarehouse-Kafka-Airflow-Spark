@@ -1,13 +1,5 @@
 import os
-
-# import boto3
-import pyspark.sql.functions as F
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructField, StructType, IntegerType, \
-    StringType, FloatType, TimestampType
-
-sales_data = "/home/sam/Desktop/10_acad/week_9/streaming_app/data/clean_data.csv"
-topic_input = "test"
+import boto3
 
 import findspark
 findspark.init('/opt/spark')
@@ -16,60 +8,47 @@ import os
 os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 pyspark-shell'
 
 
+from pyspark.sql import SparkSession
 
-def main():
-
-    spark = SparkSession \
-        .builder \
-        .master('local[1]') \
-        .appName("kafka-streaming-sales-console") \
-        .getOrCreate()
-
-    df_sales = read_from_kafka(spark)#, params)
-
-    summarize_sales(df_sales)
-
-
-def read_from_kafka(spark):#, params):
-    options_read = {
-        "kafka.bootstrap.servers":
-            "localhost:9092",
-        "subscribe":
-            topic_input,
-    }
-
-    df_sales = spark.readStream \
-        .format("kafka") \
-        .options(**options_read) \
-        .option("startingOffsets", "earliest") \
-        .load()
-
-    return df_sales
-
-
-def summarize_sales(df_sales):
-    schema = StructType([
-        StructField("headline", StringType(), False),
-        StructField("category", StringType(), False),
-        StructField("article", StringType(), False),
-    ])
-
-    ds_sales = df_sales \
-        .selectExpr("CAST(value AS STRING)") \
-        .select(F.from_json("value", schema=schema).alias("data")) \
-        .writeStream \
-        .queryName("streaming_to_console") \
-        .trigger(processingTime="1 minute") \
-        .format("console") \
-        .option("numRows", 25) \
-        .option("truncate", False) \
-        .start()
-
-    ds_sales.awaitTermination()
+spark = SparkSession.builder \
+                    .master('local[1]') \
+                    .appName('SparkByExamples.com') \
+                    .getOrCreate()
 
 
 
 
+# df.printSchema()
 
-if __name__ == "__main__":
-    main()
+df = spark \
+    .readStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", "localhost:9092") \
+    .option("subscribe", "test") \
+    .option("startingOffsets", "earliest") \
+    .load()
+
+
+
+query = df.selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)") \
+    .writeStream \
+    .format("console") \
+    .option("checkpointLocation", "/home/sam/Desktop/10_acad/week_9/streaming_app/data/kafka") \
+    .start()
+
+
+query.awaitTermination()
+
+df.printSchema()
+
+# def upload_file(file_name: str, bucket: str, object_name=None):
+#     # If S3 object_name was not specified, use file_name
+#     if object_name is None:
+#         object_name = os.path.basename(file_name)
+
+#     # Upload the file
+#     s3_client = boto3.client('s3')
+    
+#     response = s3_client.upload_file(file_name, bucket, object_name)
+    
+#     return True

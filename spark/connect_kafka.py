@@ -2,10 +2,10 @@ import os
 import boto3
 
 import findspark
-findspark.init('/opt/spark')
+findspark.init()
 
-import os
-os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 pyspark-shell'
+# import os
+# os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0 pyspark-shell'
 
 
 from pyspark.sql import SparkSession
